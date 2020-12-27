@@ -35,11 +35,6 @@
      *
      */
     function initChromecast() {
-      // Avoid init if window.chromecaster is declared
-      if (window.chromecaster) {
-        return;
-      }
-
       // Listener setup for when the chromecast is available
       window['__onGCastApiAvailable'] = function (loaded, errorInfo) {
         if (loaded) {
