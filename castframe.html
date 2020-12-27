@@ -7,7 +7,12 @@
     window.addEventListener(
       'message',
       (event) => {
-        chromecaster(event.data);
+        if (scriptTag) {
+          chromecaster(event.data);
+        } else {
+          bootcast = event.data;
+          initChromecast();
+        }
       },
       false
     );
@@ -72,9 +77,9 @@
         if (e === chrome.cast.ReceiverAvailability.AVAILABLE) {
           // Perfect time to show the chromecast button
           console.info('Chromecast available');
-          var btns = document.querySelectorAll('.cc_bttn_wrap');
-          for (i = 0; i < btns.length; i++) {
-            btns[i].style.display = 'inline-block';
+          if (bootcast) {
+            chromecaster(bootcast);
+            bootcast = null;
           }
         } else {
           console.error('Chromecast not available');
@@ -88,6 +93,13 @@
       function onError(e) {
         console.error('Init failed', e);
       }
+
+      window.scriptTag = document.createElement('script');
+      scriptTag.setAttribute(
+        'src',
+        'https://www.gstatic.com/cv/js/sender/v1/cast_sender.js?loadCastFramework=1'
+      );
+      document.body.appendChild(scriptTag);
     }
 
     /**
@@ -158,7 +170,7 @@
     };
 
     // Boot Chromecast
-    initChromecast();
+    // initChromecast();
   </script>
-  <script src="https://www.gstatic.com/cv/js/sender/v1/cast_sender.js?loadCastFramework=1"></script>
+  <!-- <script src="https://www.gstatic.com/cv/js/sender/v1/cast_sender.js?loadCastFramework=1"></script> -->
 </html>
