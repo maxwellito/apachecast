@@ -1,5 +1,5 @@
 const EOL = /\?|#/;
-const RelativeRegex = /^(http\:|https\:|ftp\:|\/)/;
+const RelativeRegex = /^(http\:|https\:|ftp\:|\/\/)/;
 const authorizedMediaTypes = ['mp3', 'mp4', 'mkv', 'm4v', 'webm'];
 
 function loadDir(path) {
@@ -14,7 +14,12 @@ function parseDirHtml(html, basePath) {
   wrap.innerHTML = html;
   return Array.from(wrap.querySelectorAll('a'))
     .map((a) => {
-      const link = a.href.split(EOL)[0];
+      let link = a.getAttribute('href').split(EOL)[0];
+      if (link.startsWith('/')) {
+        link = domain + link;
+      } else if (!RelativeRegex.test(link)) {
+        link = basePath + link;
+      }
       const isDir = link.endsWith('/');
       const label = a.innerText;
       return { link, label, isDir };

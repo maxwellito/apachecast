@@ -1,6 +1,9 @@
 function setDomain(url) {
   url = url || window.prompt('Provide the base URL of your Apache server');
 
+  if (!url) {
+    return;
+  }
   if (!url.startsWith('http')) {
     return alert('Please enter a valid URL. It must start by "http(s)://"');
   }

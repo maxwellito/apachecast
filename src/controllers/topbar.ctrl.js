@@ -8,8 +8,8 @@ class TopbarCtrl extends Ctrl {
     super(`
       <div class="topbar">
         <div data-id="start">Tap to start</div>
-        <div data-id="folder">Tap to start</div>
-        <div data-id="path">Tap to start</div>
+        <div data-id="folder"></div>
+        <div data-id="path"></div>
       </div>
     `);
     this.init();
