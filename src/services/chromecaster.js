@@ -141,3 +141,6 @@ window.chromecaster = window.chromecaster = function (
     }
   }
 };
+
+// Boot Chromecast
+initChromecast();

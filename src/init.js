@@ -48,6 +48,3 @@ document.body.appendChild(directory.el);
 if (location.hash) {
   setDomain(location.hash.substr(1));
 }
-
-// Boot Chromecast
-initChromecast();
