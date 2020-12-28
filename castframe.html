@@ -83,12 +83,6 @@
 
       function onInitSuccess() {
         console.info('Succesfully init');
-        if (bootcast) {
-          setTimeout(() => {
-            chromecaster(bootcast);
-            bootcast = null;
-          }, 1000);
-        }
       }
 
       function onError(e) {
