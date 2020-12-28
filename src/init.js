@@ -39,7 +39,10 @@ function goToDir(url) {
 }
 
 function goCast(mediaUrl) {
-  window.open(`https://maxwellito.github.io/cast.html#${mediaUrl}`, '_blank');
+  window.open(
+    `https://maxwellito.github.io/apachecast/cast.html#${mediaUrl}`,
+    '_blank'
+  );
 }
 
 // Set up template
