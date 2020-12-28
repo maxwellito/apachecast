@@ -9,7 +9,6 @@
         margin: 0;
       }
     </style>
-    <script src="https://www.gstatic.com/cv/js/sender/v1/cast_sender.js?loadCastFramework=1"></script>
     <script>
       // Wait for chromecast API to be loaded
       window['__onGCastApiAvailable'] = function (isAvailable) {
@@ -26,6 +25,10 @@
           receiverApplicationId:
             chrome.cast.media.DEFAULT_MEDIA_RECEIVER_APP_ID,
         });
+
+        // Add Google Cast Button to the body
+        const gcb = document.createElement('google-cast-launcher');
+        document.body.appendChild(gcb);
       };
 
       let trigger = function () {
@@ -52,9 +55,9 @@
         false
       );
     </script>
+    <script src="https://www.gstatic.com/cv/js/sender/v1/cast_sender.js?loadCastFramework=1"></script>
   </head>
   <body>
     <button onclick="trigger()">Fuck</button>
-    <google-cast-launcher></google-cast-launcher>
   </body>
 </html>
