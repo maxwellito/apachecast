@@ -26,7 +26,7 @@ class DirectoryCtrl extends Ctrl {
       .filter((file) => file.isDir)
       .map(
         (file) => `
-        <div class="fileItem" onclick="goToDir('${file.link}')">
+        <div class="fileItem dir" onclick="goToDir('${file.link}')">
           <span>${file.label}</span>
         </div>
       `
@@ -36,7 +36,7 @@ class DirectoryCtrl extends Ctrl {
       .filter((file) => !file.isDir)
       .map(
         (file) => `
-        <div class="fileItem" onclick="goCast('${file.link}')">
+        <div class="fileItem file" onclick="goCast('${file.link}')">
           <span>${file.label}</span>
         </div>
       `

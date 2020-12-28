@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Cast remote</title>
+    <title>QuickCast</title>
     <style>
       html,
       body {
@@ -14,47 +14,36 @@
       }
       body {
         display: flex;
+        flex-direction: column;
         align-items: center;
         justify-content: center;
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
           Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        word-break: break-all;
+        text-align: center;
       }
       .container {
         display: flex;
-        width: 80%;
+        width: 50%;
         max-width: 400px;
       }
-      .action {
-        display: flex;
-        flex-direction: column;
-        width: 50%;
-        text-align: center;
-        margin: 3%;
-      }
-      .action google-cast-launcher,
-      .action button {
-        flex-grow: 1;
-        width: 100%;
-        height: 100%;
-      }
-      .action button {
-        background: transparent;
-        color: #fff;
-        border: 0.75em solid #fff;
-        border-radius: 0.75em;
-        min-height: 3em;
-        font-weight: bold;
-        font-size: 20px;
-        margin: 1.5em 0;
-      }
       google-cast-launcher {
+        width: 40%;
+        max-width: 240px;
         --disconnected-color: white;
+      }
+      p {
+        max-width: 80%;
+        font-size: 0.875em;
+        opacity: 0.5;
       }
     </style>
     <script>
+      const currentMediaURL = location.hash.substr(1);
+
       // Wait for chromecast API to be loaded
       window['__onGCastApiAvailable'] = function (isAvailable) {
-        console.log('Finally, this bitch is calling me!', isAvailable);
+        console.log('Cast API availability:', isAvailable);
         if (isAvailable) {
           initializeCastApi();
         }
@@ -69,13 +58,8 @@
         });
       };
 
-      let trigger = function () {
-        cast.framework.CastContext.getInstance().requestSession();
-      };
-
       // Send a URL to stream to the TV
       let chromecaster = () => {
-        const currentMediaURL = location.hash.substr(1);
         var castSession = cast.framework.CastContext.getInstance().getCurrentSession();
         var mediaInfo = new chrome.cast.media.MediaInfo(
           currentMediaURL,
@@ -85,27 +69,25 @@
         castSession.loadMedia(request);
       };
 
-      // Listen for commands from the parent window
-      window.addEventListener(
-        'message',
-        (event) => {
-          chromecaster(event.data);
-        },
-        false
-      );
+      // Wait for the Cast to be ready
+      // ...I couldn't find the right event to listen..
+      const stateCheckId = setInterval(() => {
+        const state = cast.framework.CastContext.getInstance().getCastState();
+        if (state === 'CONNECTED') {
+          clearInterval(stateCheckId);
+          chromecaster();
+        }
+      }, 500);
+
+      // Show the media URL on the GUI
+      window.onload = () => {
+        window.mediaUrLabel.innerText = currentMediaURL;
+      };
     </script>
     <script src="https://www.gstatic.com/cv/js/sender/v1/cast_sender.js?loadCastFramework=1"></script>
   </head>
   <body>
-    <div class="container">
-      <div class="action">
-        <google-cast-launcher></google-cast-launcher>
-        <p>This..</p>
-      </div>
-      <div class="action">
-        <button onclick="chromecaster()">Play</button>
-        <p>..then that.</p>
-      </div>
-    </div>
+    <google-cast-launcher></google-cast-launcher>
+    <p id="mediaUrLabel"></p>
   </body>
 </html>

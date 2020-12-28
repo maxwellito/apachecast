@@ -24,9 +24,16 @@ body {
 }
 
 .directory {
+  font-size: 20px;
   padding: 1rem;
 }
 
 .fileItem {
-  margin-bottom: 0.25em;
+  margin-bottom: 0.5em;
+}
+.fileItem.dir {
+  text-decoration: underline;
+}
+.fileItem.file {
+  font-weight: bold;
 }

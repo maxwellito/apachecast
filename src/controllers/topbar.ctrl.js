@@ -21,6 +21,11 @@ class TopbarCtrl extends Ctrl {
 
   setDomain(domain) {
     const domainSplit = domain.split('/').slice(2);
+    domainSplit.forEach((chunk, i) => {
+      if (chunk === '..') {
+        domainSplit.splice(i - 1, 2);
+      }
+    });
     this.folderLabel = domainSplit.pop() || domainSplit.pop();
     this.pathLabel = domainSplit.join('/');
     this.render();
