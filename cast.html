@@ -29,6 +29,7 @@
         flex-direction: column;
         width: 50%;
         text-align: center;
+        margin: 3%;
       }
       .action google-cast-launcher,
       .action button {
@@ -39,11 +40,12 @@
       .action button {
         background: transparent;
         color: #fff;
-        border: 0.25em solid #fff;
-        border-radius: 0.25em;
+        border: 0.75em solid #fff;
+        border-radius: 0.75em;
         min-height: 3em;
         font-weight: bold;
         font-size: 20px;
+        margin: 1.5em 0;
       }
       google-cast-launcher {
         --disconnected-color: white;
@@ -65,10 +67,6 @@
           receiverApplicationId:
             chrome.cast.media.DEFAULT_MEDIA_RECEIVER_APP_ID,
         });
-
-        // Add Google Cast Button to the body
-        const gcb = document.createElement('google-cast-launcher');
-        document.body.appendChild(gcb);
       };
 
       let trigger = function () {
@@ -76,7 +74,8 @@
       };
 
       // Send a URL to stream to the TV
-      let chromecaster = (currentMediaURL) => {
+      let chromecaster = () => {
+        const currentMediaURL = location.hash.substr(1);
         var castSession = cast.framework.CastContext.getInstance().getCurrentSession();
         var mediaInfo = new chrome.cast.media.MediaInfo(
           currentMediaURL,
