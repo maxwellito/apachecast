@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="//www.gstatic.com/cv/js/sender/v1/cast_sender.js?loadCastFramework=1"></script>
+    <script>
+      window['__onGCastApiAvailable'] = function (isAvailable) {
+        console.log('Finally, this bitch is calling me!');
+        if (isAvailable) {
+          initializeCastApi();
+        }
+      };
+      let initializeCastApi = function () {
+        cast.framework.CastContext.getInstance().setOptions({
+          receiverApplicationId:
+            chrome.cast.media.DEFAULT_MEDIA_RECEIVER_APP_ID,
+        });
+      };
+    </script>
+  </head>
+  <body>
+    <google-cast-launcher></google-cast-launcher>
+  </body>
+</html>
