@@ -38,6 +38,11 @@ function goToDir(url) {
   );
 }
 
+function chromecaster(url) {
+  const iff = document.querySelector('iframe');
+  iff.contentWindow.postMessage({ cmd: 'cast', val: url }, '*');
+}
+
 // Set up template
 const topbar = new TopbarCtrl();
 const directory = new DirectoryCtrl();

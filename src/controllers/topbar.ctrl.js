@@ -7,9 +7,18 @@ class TopbarCtrl extends Ctrl {
   constructor() {
     super(`
       <div class="topbar">
-        <div data-id="start">Tap to start</div>
-        <div data-id="folder"></div>
-        <div data-id="path"></div>
+        <div>
+          <div data-id="start">Tap to start</div>
+          <div data-id="folder"></div>
+          <div data-id="path"></div>
+        </div>
+        <iframe
+          data-id="iframe"
+          width="24"
+          height="24"
+          frameborder="0"
+          src="./castframe.html?t=${Date.now()}"
+        ></iframe>
       </div>
     `);
     this.init();

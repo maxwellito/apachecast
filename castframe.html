@@ -2,7 +2,95 @@
 <html lang="en">
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Document</title>
+  <title>Chromecast remote</title>
+  <button id="trigger" class="loading" onclick="initChromecast()"></button>
+  <style>
+    html,
+    body {
+      margin: 0;
+      height: 100%;
+    }
+    button {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      border: 0.25em solid transparent;
+      background: transparent;
+      padding: 0;
+      color: #fff;
+      transition: all 0.2s;
+    }
+    button.loading {
+      animation: 1s loading ease infinite;
+    }
+    button.idle {
+      animation: 3s idle ease infinite;
+    }
+    button.success {
+      background: rgb(7, 179, 16);
+    }
+    button.success:before {
+      content: '✓';
+    }
+    button.error {
+      background: rgb(204, 7, 7);
+    }
+    button.error:before {
+      content: '×';
+    }
+
+    button.play {
+      background: rgb(31, 85, 187);
+    }
+    button.play:before {
+      content: '➤';
+    }
+
+    @keyframes loading {
+      0% {
+        border-top-color: #fff0;
+        border-right-color: #fff3;
+        border-bottom-color: #fff7;
+        border-left-color: #fff;
+      }
+      25% {
+        border-top-color: #fff;
+        border-right-color: #fff0;
+        border-bottom-color: #fff3;
+        border-left-color: #fff7;
+      }
+      50% {
+        border-top-color: #fff7;
+        border-right-color: #fff;
+        border-bottom-color: #fff0;
+        border-left-color: #fff3;
+      }
+      75% {
+        border-top-color: #fff3;
+        border-right-color: #fff7;
+        border-bottom-color: #fff;
+        border-left-color: #fff0;
+      }
+      100% {
+        border-top-color: #fff0;
+        border-right-color: #fff3;
+        border-bottom-color: #fff7;
+        border-left-color: #fff;
+      }
+    }
+
+    @keyframes idle {
+      0% {
+        border-color: #ffff;
+      }
+      50% {
+        border-color: #fff7;
+      }
+      100% {
+        border-color: #ffff;
+      }
+    }
+  </style>
   <script>
     window.addEventListener(
       'message',
@@ -14,15 +102,15 @@
             break;
 
           case 'cast':
-            startB = document.createElement('button');
-            startB.onclick = () => chromecaster(val);
-            document.body.appendChild(startB);
-            // chromecaster(val);
+            window.trigger.onclick = () => chromecaster(val);
+            window.trigger.className = 'play';
             break;
         }
       },
       false
     );
+
+    window.trigger.className = 'loading';
 
     /**
      * CHROMECAST ***************************************************************
@@ -79,8 +167,10 @@
         if (e === chrome.cast.ReceiverAvailability.AVAILABLE) {
           // Perfect time to show the chromecast button
           console.info('Chromecast available');
+          window.trigger.className = 'idle';
         } else {
           console.error('Chromecast not available');
+          window.trigger.className = 'error';
         }
       }
 
@@ -166,9 +256,5 @@
         }
       }
     };
-
-    // Boot Chromecast
-    // initChromecast();
   </script>
-  <!-- <script src="https://www.gstatic.com/cv/js/sender/v1/cast_sender.js?loadCastFramework=1"></script> -->
 </html>
