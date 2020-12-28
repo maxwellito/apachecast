@@ -7,11 +7,15 @@
     window.addEventListener(
       'message',
       (event) => {
-        if (window.scriptTag) {
-          chromecaster(event.data);
-        } else {
-          bootcast = event.data;
-          initChromecast();
+        const { cmd, val } = event.data;
+        switch (cmd) {
+          case 'init':
+            initChromecast();
+            break;
+
+          case 'cast':
+            chromecaster(val);
+            break;
         }
       },
       false
