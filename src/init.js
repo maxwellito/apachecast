@@ -38,9 +38,8 @@ function goToDir(url) {
   );
 }
 
-function chromecaster(url) {
-  const iff = document.querySelector('iframe');
-  iff.contentWindow.postMessage(url, '*');
+function goCast(mediaUrl) {
+  window.open(`https://maxwellito.github.io/cast.html#${mediaUrl}`, '_blank');
 }
 
 // Set up template

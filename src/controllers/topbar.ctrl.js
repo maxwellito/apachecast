@@ -7,25 +7,16 @@ class TopbarCtrl extends Ctrl {
   constructor() {
     super(`
       <div class="topbar">
-        <div>
-          <div data-id="start">Tap to start</div>
-          <div data-id="folder"></div>
-          <div data-id="path"></div>
-        </div>
-        <iframe
-          data-id="iframe"
-          width="24"
-          height="24"
-          frameborder="0"
-          src="https://maxwellito.github.io/apachecast/casthell.html?t=${Date.now()}"
-        ></iframe>
+        <div data-id="start">Tap to start</div>
+        <div data-id="folder"></div>
+        <div data-id="path"></div>
       </div>
     `);
     this.init();
   }
 
   init() {
-    this.items.start.addEventListener('click', () => setDomain());
+    this.el.addEventListener('click', () => setDomain());
   }
 
   setDomain(domain) {

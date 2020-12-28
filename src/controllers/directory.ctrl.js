@@ -36,7 +36,7 @@ class DirectoryCtrl extends Ctrl {
       .filter((file) => !file.isDir)
       .map(
         (file) => `
-        <div class="fileItem" onclick="chromecaster('${file.link}')">
+        <div class="fileItem" onclick="goCast('${file.link}')">
           <span>${file.label}</span>
         </div>
       `
