@@ -14,7 +14,10 @@
             break;
 
           case 'cast':
-            chromecaster(val);
+            startB = document.createElement('button');
+            startB.onclick = () => chromecaster(val);
+            document.body.appendChild(startB);
+            // chromecaster(val);
             break;
         }
       },
