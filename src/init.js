@@ -40,7 +40,7 @@ function goToDir(url) {
 
 function chromecaster(url) {
   const iff = document.querySelector('iframe');
-  iff.contentWindow.postMessage({ cmd: 'cast', val: url }, '*');
+  iff.contentWindow.postMessage(url, '*');
 }
 
 // Set up template
@@ -52,4 +52,7 @@ document.body.appendChild(directory.el);
 // Set up domain if provided
 if (location.hash) {
   setDomain(location.hash.substr(1));
+} else {
+  const domain = location.toString().split('/').slice(0, 3).join('/');
+  setDomain(domain);
 }

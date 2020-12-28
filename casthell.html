@@ -3,22 +3,51 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <script src="//www.gstatic.com/cv/js/sender/v1/cast_sender.js?loadCastFramework=1"></script>
+    <title>Cast remote</title>
+    <style>
+      body {
+        margin: 0;
+      }
+    </style>
     <script>
+      // Wait for chromecast API to be loaded
       window['__onGCastApiAvailable'] = function (isAvailable) {
         console.log('Finally, this bitch is calling me!');
         if (isAvailable) {
           initializeCastApi();
         }
       };
+
+      // Set settings for the cast
       let initializeCastApi = function () {
+        // Set the currect session
         cast.framework.CastContext.getInstance().setOptions({
           receiverApplicationId:
             chrome.cast.media.DEFAULT_MEDIA_RECEIVER_APP_ID,
         });
       };
+
+      // Send a URL to stream to the TV
+      let chromecaster = (currentMediaURL) => {
+        var castSession = cast.framework.CastContext.getInstance().getCurrentSession();
+        var mediaInfo = new chrome.cast.media.MediaInfo(
+          currentMediaURL,
+          'video/mp4'
+        );
+        var request = new chrome.cast.media.LoadRequest(mediaInfo);
+        castSession.loadMedia(request);
+      };
+
+      // Listen for commands from the parent window
+      window.addEventListener(
+        'message',
+        (event) => {
+          chromecaster(event.data);
+        },
+        false
+      );
     </script>
+    <script src="//www.gstatic.com/cv/js/sender/v1/cast_sender.js?loadCastFramework=1"></script>
   </head>
   <body>
     <google-cast-launcher></google-cast-launcher>

@@ -17,7 +17,7 @@ class TopbarCtrl extends Ctrl {
           width="24"
           height="24"
           frameborder="0"
-          src="./castframe.html?t=${Date.now()}"
+          src="https://maxwellito.github.io/apachecast/casthell.html?t=${Date.now()}"
         ></iframe>
       </div>
     `);
