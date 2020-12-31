@@ -109,6 +109,7 @@ class PlayerCtrl extends Ctrl {
         break;
       case 'isPaused':
         this.items.pause.innerHTML = e.value ? '►' : '&nbsp;▌▌';
+        break;
       case 'mediaInfo':
         if (e.value) {
           this.mediaDuration = e.value.duration;
@@ -120,6 +121,7 @@ class PlayerCtrl extends Ctrl {
           this.items.currentTime.innerHTML = '&nbsp;';
           this.items.totalTime.innerHTML = '&nbsp;';
         }
+        break;
     }
   }
 
