@@ -76,10 +76,10 @@ class PlayerCtrl extends Ctrl {
 
     // Update duration
     const { duration } = player.mediaInfo;
-    this.items.currentTime.innerText = '00:00:00';
-    this.items.totalTime.innerText = PlayerCtrl.intToTime(
-      player.mediaInfo.duration
-    );
+    const cpc = this.castPlayerController;
+    this.mediaDuration = duration;
+    this.items.currentTime.innerText = cpc.getFormattedTime(0);
+    this.items.totalTime.innerText = cpc.getFormattedTime(duration || 0);
 
     // Render
     this.render();
@@ -127,16 +127,3 @@ class PlayerCtrl extends Ctrl {
     // LOL
   }
 }
-
-PlayerCtrl.intToTime = (t) => {
-  if (!t) {
-    return '';
-  }
-  let output = [Math.floor((t % 3600) / 60), t % 60]
-    .map((i) => i.toString().padStart(2, '0'))
-    .join(':');
-  if (t > 3600) {
-    output = Math.floor(t / 3600) + ':' + output;
-  }
-  return output;
-};
