@@ -32,20 +32,27 @@
         max-width: 240px;
         --disconnected-color: white;
       }
-      p {
+      #mediaUrLabel {
         max-width: 80%;
         font-size: 0.875em;
         opacity: 0.5;
       }
     </style>
+    <script src="./src/controllers/ctrl.js"></script>
+    <script src="./src/controllers/player.ctrl.js"></script>
+    <link rel="stylesheet" href="./src/controllers/player.ctrl.css" />
     <script>
       const currentMediaURL = location.hash.substr(1);
 
       // Wait for chromecast API to be loaded
-      window['__onGCastApiAvailable'] = function (isAvailable) {
+      window['__onGCastApiAvailable'] = function (isAvailable, message) {
         console.log('Cast API availability:', isAvailable);
         if (isAvailable) {
+          window.actionLabel.innerText = 'Tap to cast';
           initializeCastApi();
+        } else {
+          window.actionLabel.innerText = 'Failed starting the Cast API';
+          window.mediaUrLabel.innerText = currentMediaURL;
         }
       };
 
@@ -66,13 +73,27 @@
           'video/mp4'
         );
         var request = new chrome.cast.media.LoadRequest(mediaInfo);
-        castSession.loadMedia(request);
+        castSession.loadMedia(request).then(
+          () => {
+            var player = new cast.framework.RemotePlayer();
+            var playerController = new cast.framework.RemotePlayerController(
+              player
+            );
+            var playerCtrl = new PlayerCtrl();
+            playerCtrl.setCast(player, playerController);
+            document.body.appendChild(playerCtrl.el);
+            playerCtrl.init();
+          },
+          () => {}
+        );
       };
 
       // Wait for the Cast to be ready
       // ...I couldn't find the right event to listen..
       const stateCheckId = setInterval(() => {
-        const state = cast.framework.CastContext.getInstance().getCastState();
+        const state =
+          window.cast &&
+          window.cast.framework.CastContext.getInstance().getCastState();
         if (state === 'CONNECTED') {
           clearInterval(stateCheckId);
           chromecaster();
@@ -81,13 +102,15 @@
 
       // Show the media URL on the GUI
       window.onload = () => {
-        window.mediaUrLabel.innerText = currentMediaURL;
+        window.mediaUrLabel.innerText =
+          window.mediaUrLabel.innerText || currentMediaURL;
       };
     </script>
     <script src="https://www.gstatic.com/cv/js/sender/v1/cast_sender.js?loadCastFramework=1"></script>
   </head>
   <body>
     <google-cast-launcher></google-cast-launcher>
+    <p id="actionLabel">Loading...</p>
     <p id="mediaUrLabel"></p>
   </body>
 </html>
