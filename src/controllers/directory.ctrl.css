@@ -1,0 +1,28 @@
+.directory {
+  font-size: 20px;
+}
+
+.fileItem {
+  display: flex;
+  padding: 1rem;
+  border-bottom: 1px solid currentColor;
+  cursor: pointer;
+}
+.fileItem.dir:before {
+  background-image: url(../../assets/icons/folder.svg);
+}
+.fileItem.file {
+  font-weight: bold;
+}
+.fileItem.file:before {
+  background-image: url(../../assets/icons/play-circle.svg);
+}
+.fileItem:before {
+  content: '';
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  min-width: 24px;
+  margin-right: 1rem;
+  background-size: contain;
+}

@@ -108,7 +108,7 @@ class PlayerCtrl extends Ctrl {
         this.items.seekForward.disabled = !e.value;
         break;
       case 'isPaused':
-        this.items.pause.innerHTML = e.value ? '►' : '&nbsp;▌▌';
+        this.items.pause.innerHTML = e.value ? '▶' : '&nbsp;▌▌';
         break;
       case 'mediaInfo':
         if (e.value) {

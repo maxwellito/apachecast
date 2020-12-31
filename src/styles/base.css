@@ -3,37 +3,5 @@ body {
     Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   margin: 0;
   word-break: break-all;
-}
-
-.topbar {
-  color: #fff;
-  background: #222;
-  padding: 1rem;
-}
-
-.topbar [data-id='start'] {
-  text-align: center;
-}
-.topbar [data-id='folder'] {
-  font-weight: bold;
-}
-.topbar [data-id='path'] {
-  font-style: italic;
-  font-size: 0.875em;
-  opacity: 0.75;
-}
-
-.directory {
-  font-size: 20px;
-  padding: 1rem;
-}
-
-.fileItem {
-  margin-bottom: 0.5em;
-}
-.fileItem.dir {
-  text-decoration: underline;
-}
-.fileItem.file {
-  font-weight: bold;
+  user-select: none;
 }

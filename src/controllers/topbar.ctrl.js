@@ -32,8 +32,8 @@ class TopbarCtrl extends Ctrl {
   }
 
   render() {
-    this.items.folder.innerText = this.folderLabel;
-    this.items.path.innerText = this.pathLabel || ' ';
+    this.items.folder.innerText = decodeURI(this.folderLabel);
+    this.items.path.innerText = decodeURI(this.pathLabel) || ' ';
 
     this.items.start.style.display = this.folderLabel ? 'none' : 'inherit';
     this.items.folder.style.display = !this.folderLabel ? 'none' : 'inherit';
