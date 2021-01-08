@@ -25,12 +25,20 @@ function parseDirHtml(html, basePath) {
       return { link, label, isDir };
     })
     .filter((file) => {
+      const isHidden = file.link
+        .split('/')
+        .filter((e) => !!e)
+        .pop()
+        .startsWith('.');
       const mediaType = file.link.split('.').pop();
       const isApprovedType = authorizedMediaTypes.includes(mediaType);
       const isCurrentLocation = file.link === basePath;
       const isSameDomain = file.link.startsWith(domain);
       return (
-        (file.isDir || isApprovedType) && !isCurrentLocation && isSameDomain
+        !isHidden &&
+        (file.isDir || isApprovedType) &&
+        !isCurrentLocation &&
+        isSameDomain
       );
     });
 }

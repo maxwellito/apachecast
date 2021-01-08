@@ -26,7 +26,7 @@ class DirectoryCtrl extends Ctrl {
       .filter((file) => file.isDir)
       .map(
         (file) => `
-        <div class="fileItem dir" onclick="goToDir('${file.link}')">
+        <div class="fileItem dir" onclick="setDir('${file.link}')">
           <span>${file.label}</span>
         </div>
       `

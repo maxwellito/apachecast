@@ -25,6 +25,10 @@ function setDomain(url) {
     );
 }
 
+function setDir(url) {
+  window.location.hash = url;
+}
+
 function goToDir(url) {
   loadDir(url).then(
     (fileList) => {
@@ -52,9 +56,13 @@ document.body.appendChild(topbar.el);
 document.body.appendChild(directory.el);
 
 // Set up domain if provided
-if (location.hash) {
-  setDomain(location.hash.substr(1));
-} else {
-  const domain = location.toString().split('/').slice(0, 3).join('/');
-  setDomain(domain);
+function hashHandler() {
+  if (location.hash) {
+    setDomain(location.hash.substr(1));
+  } else {
+    const domain = location.toString().split('/').slice(0, 3).join('/');
+    setDomain(domain);
+  }
 }
+window.addEventListener('hashchange', hashHandler, false);
+hashHandler();
