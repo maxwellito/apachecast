@@ -5,33 +5,44 @@
 class PlayerCtrl extends Ctrl {
   constructor() {
     super(`
-      <div class="player">
-        <input data-id="progress" type="range" min="0" max="100"/>
-        <div>
-          <span data-id="currentTime"></span>
-          <button data-id="seekBack" class="seek">- 20</button>
-          <button data-id="pause">&nbsp;▌▌</button>
-          <button data-id="seekForward" class="seek">+ 20</button>
-          <span data-id="totalTime"></span>
+      <div>
+        <div class="player">
+          <input data-id="progress" type="range" min="0" max="100" step="0.01"/>
+          <div>
+            <span data-id="currentTime"></span>
+            <button data-id="seekBack" class="seek">- 20</button>
+            <button data-id="pause">&nbsp;▌▌</button>
+            <button data-id="seekForward" class="seek">+ 20</button>
+            <span data-id="totalTime"></span>
+          </div>
+        </div>
+        <div data-id="seek" class="player-seek">
+          <div data-id="seekTime" class="player-seek-time">00:12:54</div>
+          <div data-id="seekDiff" class="player-seek-diff">- 01:12</div>
         </div>
       </div>
     `);
     this.castPlayer = null;
     this.castPlayerController = null;
+    this.seekingStart = null;
+    this.seekingPos = null;
 
     // Binded listeners
     this.playerEvent = this.playerEvent.bind(this);
-    this.seek = this.seek.bind(this);
+    this.pause = this.pause.bind(this);
     this.seekBack = this.seekBack.bind(this);
     this.seekForward = this.seekForward.bind(this);
-    this.pause = this.pause.bind(this);
+    this.seekStart = this.seekStart.bind(this);
+    this.seekSlide = this.seekSlide.bind(this);
+    this.seek = this.seek.bind(this);
   }
 
   init() {
-    this.items.progress.addEventListener('change', this.seek);
-    this.items.seekBack.addEventListener('click', this.seekBack);
     this.items.pause.addEventListener('click', this.pause);
+    this.items.seekBack.addEventListener('click', this.seekBack);
     this.items.seekForward.addEventListener('click', this.seekForward);
+    this.items.progress.addEventListener('mousedown', this.seekStart);
+    this.items.progress.addEventListener('change', this.seek);
   }
 
   // UI Actions
@@ -41,13 +52,6 @@ class PlayerCtrl extends Ctrl {
     }
   }
 
-  seek(e) {
-    if (this.mediaDuration) {
-      const newTime = (parseInt(e.target.value) / 100) * this.mediaDuration;
-      this.castPlayer.currentTime = newTime;
-      this.castPlayerController.seek();
-    }
-  }
   seekBack() {
     this.castPlayer.currentTime = Math.max(0, (this.currentTime || 0) - 20);
     this.castPlayerController.seek();
@@ -55,6 +59,28 @@ class PlayerCtrl extends Ctrl {
   seekForward() {
     this.castPlayer.currentTime = this.currentTime + 20;
     this.castPlayerController.seek();
+  }
+  seekStart() {
+    this.seekingStart = this.castPlayer.currentTime;
+    this.seekingPos = this.castPlayer.currentTime;
+    this.items.progress.addEventListener('mousemove', this.seekSlide);
+    this.updateHelper();
+  }
+  seekSlide() {
+    const newTime =
+      (parseInt(this.items.progress.value) / 100) * this.mediaDuration;
+    this.seekingPos = newTime;
+    this.updateHelper();
+  }
+  seek(e) {
+    if (this.mediaDuration) {
+      const newTime = (parseInt(e.target.value) / 100) * this.mediaDuration;
+      this.castPlayer.currentTime = newTime;
+      this.castPlayerController.seek();
+    }
+    this.seekingStart = null;
+    this.items.progress.removeEventListener('mousemove', this.seekSlide);
+    this.updateHelper();
   }
 
   setCast(player, playerController) {
@@ -92,7 +118,7 @@ class PlayerCtrl extends Ctrl {
       case 'currentTime':
         this.currentTime = e.value;
         this.items.currentTime.innerText = cpc.getFormattedTime(e.value);
-        if (this.mediaDuration) {
+        if (this.mediaDuration && this.seekingStart === null) {
           this.items.progress.value = cpc.getSeekPosition(
             e.value,
             this.mediaDuration
@@ -122,6 +148,18 @@ class PlayerCtrl extends Ctrl {
           this.items.totalTime.innerHTML = '&nbsp;';
         }
         break;
+    }
+  }
+
+  updateHelper() {
+    if (this.seekingStart === null) {
+      this.items.seek.style.visibility = 'hidden';
+    } else {
+      this.items.seek.style.visibility = 'visible';
+      this.items.seekTime.innerText = cpc.getFormattedTime(this.seekingPos);
+      this.items.seekDiff.innerText = cpc.getFormattedTime(
+        this.seekingPos - this.seekingStart
+      );
     }
   }
 

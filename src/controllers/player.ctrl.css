@@ -74,3 +74,24 @@
 .player [disabled] {
   opacity: 0.25;
 }
+
+.player-seek {
+  position: fixed;
+  visibility: hidden;
+  left: 50%;
+  bottom: 10rem;
+  transform: translateX(-50%);
+  background: #0009;
+  padding: 0.5em 1em;
+  border-radius: 0.5rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.player-seek-time {
+  font-size: 1.5rem;
+}
+
+.player-seek-diff {
+  font-size: 0.875rem;
+  opacity: 0.75;
+}
