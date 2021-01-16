@@ -161,11 +161,12 @@ class PlayerCtrl extends Ctrl {
     if (this.seekingStart === null) {
       this.items.seek.style.visibility = 'hidden';
     } else {
+      const cpc = this.castPlayerController;
+      const diff = this.seekingPos - this.seekingStart;
       this.items.seek.style.visibility = 'visible';
       this.items.seekTime.innerText = cpc.getFormattedTime(this.seekingPos);
-      this.items.seekDiff.innerText = cpc.getFormattedTime(
-        this.seekingPos - this.seekingStart
-      );
+      this.items.seekDiff.innerText =
+        (diff < 0 ? '-' : '') + cpc.getFormattedTime(Math.abs(diff));
     }
   }
 
