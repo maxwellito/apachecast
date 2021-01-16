@@ -42,6 +42,7 @@ class PlayerCtrl extends Ctrl {
     this.items.seekBack.addEventListener('click', this.seekBack);
     this.items.seekForward.addEventListener('click', this.seekForward);
     this.items.progress.addEventListener('mousedown', this.seekStart);
+    this.items.progress.addEventListener('touchstart', this.seekStart);
     this.items.progress.addEventListener('change', this.seek);
   }
 
@@ -61,18 +62,22 @@ class PlayerCtrl extends Ctrl {
     this.castPlayerController.seek();
   }
   seekStart() {
+    console.log('seek start');
     this.seekingStart = this.castPlayer.currentTime;
     this.seekingPos = this.castPlayer.currentTime;
     this.items.progress.addEventListener('mousemove', this.seekSlide);
+    this.items.progress.addEventListener('touchmove', this.seekSlide);
     this.updateHelper();
   }
   seekSlide() {
+    console.log('seek slide');
     const newTime =
       (parseInt(this.items.progress.value) / 100) * this.mediaDuration;
     this.seekingPos = newTime;
     this.updateHelper();
   }
   seek(e) {
+    console.log('seek end');
     if (this.mediaDuration) {
       const newTime = (parseInt(e.target.value) / 100) * this.mediaDuration;
       this.castPlayer.currentTime = newTime;
@@ -80,6 +85,7 @@ class PlayerCtrl extends Ctrl {
     }
     this.seekingStart = null;
     this.items.progress.removeEventListener('mousemove', this.seekSlide);
+    this.items.progress.removeEventListener('touchmove', this.seekSlide);
     this.updateHelper();
   }
 
