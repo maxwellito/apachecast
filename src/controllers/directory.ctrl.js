@@ -36,7 +36,9 @@ class DirectoryCtrl extends Ctrl {
       .filter((file) => !file.isDir)
       .map(
         (file) => `
-        <div class="fileItem file" onclick="goCast('${file.link}')">
+        <div class="fileItem file ${
+          file.hasBeenTapped ? 'played' : ''
+        }" onclick="goCast('${file.link}')">
           <span>${file.label}</span>
         </div>
       `

@@ -43,6 +43,10 @@ function goToDir(url) {
 }
 
 function goCast(mediaUrl) {
+  if (window.event && window.event.currentTarget) {
+    window.event.currentTarget.classList.add('played');
+  }
+  localStorage.setItem(`tap_${mediaUrl}`, 1);
   window.open(
     `https://maxwellito.github.io/apachecast/cast.html#${mediaUrl}`,
     '_blank'

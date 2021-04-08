@@ -17,6 +17,9 @@
 .fileItem.file:before {
   background-image: url(../../assets/icons/play-circle.svg);
 }
+.fileItem.played span {
+  opacity: 0.5;
+}
 .fileItem:before {
   content: '';
   display: inline-block;

@@ -22,7 +22,12 @@ function parseDirHtml(html, basePath) {
       }
       const isDir = link.endsWith('/');
       const label = a.innerText;
-      return { link, label, isDir };
+      return {
+        link,
+        label,
+        isDir,
+        hasBeenTapped: !!localStorage.getItem(`tap_${link}`),
+      };
     })
     .filter((file) => {
       const isHidden = file.link
